@@ -4,6 +4,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import yfinance as yf
 import streamlit as st
+import plotly.express as px
 
 # SIGLA E NOME DO ATIVO ANALISADO:
 sigla_ativo = "MNQ=F"
@@ -64,74 +65,11 @@ else:
 
 
 
-# DEMARCAÇÃO NO GRÁFICO DO DIA ATUAL:
-
-input_inicio_marcacao = input('')
-input_final_marcacao = input('')
-
-# DATA DO PREGÃO ATUAL:
-
-pregao_atual = dados_historico_vencimento.index[-1]
-
-# PREÇO DO ÚLTIMO FECHAMENTO E ÚLTIMA ABERTURA:
-# PREENCHER OS VALORES ABAIXO:
-
-input_preco_ultimo_fechamento = float(input(''))
-input_ultima_abertura = float(input(''))
-
-def linha():
-    print('-' * 37)
-
-# CÁLCULO PARA ANÁLISE DESVIO PADRÃO:*
-mais_2dp = (input_preco_ultimo_fechamento + (desvio_padrao * 2))
-mais_1dp_e_meio = (input_preco_ultimo_fechamento + (meio_desvio_padrao * 3))
-mais_1dp = (input_preco_ultimo_fechamento + (desvio_padrao))
-mais_meio_desvio_padrao = (input_preco_ultimo_fechamento + meio_desvio_padrao)
-
-
-menos_meio_desvio_padrao = (input_preco_ultimo_fechamento - meio_desvio_padrao)
-menos_1dp = (input_preco_ultimo_fechamento - (desvio_padrao))
-menos_1dp_e_meio = (input_preco_ultimo_fechamento - (meio_desvio_padrao * 3))
-menos_2dp = (input_preco_ultimo_fechamento - (desvio_padrao * 2))
 
 
 
-# PLOTAR GRÁFICO INTRADAY DO ATIVO ANALISADO:
-grafico = plt.figure(figsize=(19.2, 8.2), facecolor='#111111', label=f"GRÁFICO INTRADIÁRIO DO {nome_ativo} ({sigla_ativo})")
-ax = plt.axes()
-ax.set_facecolor("#111111")
-dados_historico_intraday['Adj Close'].plot(label='Nasdaq Futuros', lw=2, color='#33ffff')
-plt.title(f"GRÁFICO INTRADIÁRIO DO {nome_ativo} ({sigla_ativo}), {pregao_atual}", color='#7fff00', fontsize=18 )
-plt.ylabel('Preço do Ativo', color='r', fontsize=12)
-plt.xlabel('Data Histórico', color='r', fontsize=12)
-plt.axhline(mais_2dp, color='r', ls='--', lw=4, label=f'+ 2 DP: ....................... {mais_2dp:.2f}')
-plt.axhline(mais_1dp_e_meio, color='r', lw=3, ls='--', label=f'+ 1 DP e Meio: ........... {mais_1dp_e_meio:.2f}')
-plt.axhline(mais_1dp, color='r', ls='--', lw=2, label=f'+ 1 DP: ....................... {mais_1dp:.2f}')
-plt.axhline(mais_meio_desvio_padrao, color='r', lw=1, ls='--', label=f'+ Meio DP: ................. {mais_meio_desvio_padrao:.2f}')
-plt.axhline(input_preco_ultimo_fechamento, color='blue', ls='--', lw=2, label=f'Último Fechamento: ... {input_preco_ultimo_fechamento:.2f}')
-plt.axhline(input_ultima_abertura, color='white', ls='--', lw=2, label=f'Última Abertura: ......... {input_ultima_abertura:.2f}')
-plt.axhline(menos_meio_desvio_padrao, color='g', lw=1, ls='--', label=f'- Meio DP: ................... {menos_meio_desvio_padrao:.2f}')
-plt.axhline(menos_1dp, color='g', ls='--', lw=2, label=f'- 1 DP: ......................... {menos_1dp:.2f}')
-plt.axhline(menos_1dp_e_meio, color='g', lw=3, ls='--', label=f'- 1 DP e Meio: ............. {menos_1dp_e_meio:.2f}')
-plt.axhline(menos_2dp, color='g', ls='--', lw=4, label=f'- 2 DP: ......................... {menos_2dp:.2f}')
 
 
-
-# ESSE FILTRO, NO GRÁFICO, INICIA-SE APÓS MEIA NOITE (00:00), E TERMINA A MEIA NOITE (00:00) DO DIA DO FILTRO FINAL:
-plt.axvline(inicio_marcacao, color='#ffd700', label='Inicio dia atual')
-plt.axvline(final_marcacao, color='#ffd700', label='Fim dia atual')
-plt.grid(axis='x', color='white')
-plt.grid(axis='y', color='white')
-ax.tick_params(axis='y', colors='white')
-ax.tick_params(axis='x', colors='white')
-ax.spines['bottom'].set_color('w')
-ax.spines['top'].set_color('w')
-ax.spines['left'].set_color('w')
-ax.spines['right'].set_color('w')
-plt.legend(facecolor='w', frameon=True, framealpha=0.8)
-plt.show()
-
-input()
 
 
 
